@@ -1,0 +1,96 @@
+To compile voof, simply 'make' it.  If you also want to compile the LZRW1-A
+compressor, type 'make all.'  The reason I wrote the voof shell is so I could
+slap in and test Ross Williams' algorithms in quickly.  Thanks to Ross' neat
+memory block based standard, it's super simple to try out the different
+algorithms, all you have to do is compile one in with the voof shell.
+
+After compilation, the makefile will have produced voof, and some hard links
+"foov" and "vcat."  The links correspond to unix compress' links, uncompress
+and zcat.  voof will also recognize and take appropriate action when it is
+named 'unvoof' if you don't like 'foov.'
+
+Changes from the original release:
+	-	New name; previous name was a trademark of Apple Computer!  I guess
+		I shouldn't be that surprised, since they paid a million dollars
+		to use the name "Classic."
+	-	Nasty bug fixed!  A new -f flag must be specified to overwrite existing
+		files now.  I was blurring the distinction between MAXPATHLEN and
+		FILENAME_MAX also.  Thanks to Jan Christiaan van Winkel for reporting
+		this bug!
+	-	Minor aesthetic changes.
+	
+I do not intend that voof replace compress since it doesn't compress much
+better (it is alot faster, however); that also means I get out of having
+to make a man page. Should Ross come up with a killer algorithm,
+I'll reconsider ;-)
+
+Changes to original LZRW sources:
+	-	moved all cpp lines so the # is in the first column.
+	-	defined a macro for the fast_copy function in port.h
+	-	defined the UCARD that Ross wanted to add but forgot to port.h
+	-	changed Think C's UWORD definition to unsigned short. Think C's
+		int and short are both 2 bytes.  'short' also happens to be the
+		usual 2 byte type on most systems anyway.  This also prevents
+		an incompatibility with Apple's (Macintosh) MPW compiler since
+		it's 'int' is 4 bytes.
+	-	left in Think C's sample in port.h and added an #else block for
+		the unix section, along with my sample unix declarations.
+	-	added #ifdef old_protos blocks where RW has used full ANSI
+		function prototypes like foo(int a, int b);  Some older
+		compilers don't support them yet.
+	-	changed all stuff like foo=&bar to foo = &bar, and foo=*ptr to
+		foo = *ptr.  Old compilers think you mean &= and *=.  This also
+		shuts off gobs of warning messages in newer compilers.
+	-	added spaces between operators and operands where I could, for
+		increased readibility, and the above problem.
+	-	#ifdef'd the #include "fast_copy.h" lines in lzrw*.c files, since
+		it's 99% likely that you'll use bcopy or memcpy instead.
+	-	added Ross' email address in the lzrw*.c files, along with a note
+		on where you can ftp the original sources from.
+
+Actual output from voof on the Calgary corpus follows.  This was done on a
+Silicon Graphics 4/370, by the way. You can obtain the corpus by setting
+aside 6 megs of disk space and ftp'ing to:
+	fsa.cpsc.ucalgary.ca [136.159.2.1] /pub/text.compression.corpus
+
+voof -v:
+bib            -> 111261 in  51012 out  45.85%  0.21 sec  517.40 K/s  3.67 bits
+book1          -> 768771 in  435636 out  56.67%  1.52 sec  493.92 K/s  4.53 bits
+book2          -> 610856 in  290322 out  47.53%  1.06 sec  562.77 K/s  3.80 bits
+geo            -> 102400 in  84996 out  83.00%  0.33 sec  303.03 K/s  6.64 bits
+news           -> 377109 in  198633 out  52.67%  0.73 sec  504.48 K/s  4.21 bits
+obj1           -> 21504 in  12663 out  58.89%  0.06 sec  350.00 K/s  4.71 bits
+obj2           -> 246814 in  110408 out  44.73%  0.46 sec  523.98 K/s  3.58 bits
+paper1         -> 53161 in  24538 out  46.16%  0.10 sec  519.15 K/s  3.69 bits
+paper2         -> 82199 in  40678 out  49.49%  0.15 sec  535.15 K/s  3.96 bits
+paper3         -> 46526 in  23961 out  51.50%  0.09 sec  504.84 K/s  4.12 bits
+paper4         -> 13286 in  7418 out  55.83%  0.04 sec  324.37 K/s  4.47 bits
+paper5         -> 11954 in  6568 out  54.94%  0.03 sec  389.13 K/s  4.40 bits
+paper6         -> 38105 in  18013 out  47.27%  0.09 sec  413.47 K/s  3.78 bits
+pic            -> 513216 in  113485 out  22.11%  0.87 sec  576.08 K/s  1.77 bits
+progc          -> 39611 in  17935 out  45.28%  0.08 sec  483.53 K/s  3.62 bits
+progl          -> 71646 in  24957 out  34.83%  0.11 sec  636.06 K/s  2.79 bits
+progp          -> 49379 in  16817 out  34.06%  0.09 sec  535.80 K/s  2.72 bits
+trans          -> 93695 in  32013 out  34.17%  0.16 sec  571.87 K/s  2.73 bits
+TOTAL          -> 3251493 in  1510053 out  46.44%  6.66 sec  476.77 K/s  3.72 bits
+
+voof1a -v:
+bib            -> 111261 in  66090 out  59.40%  0.14 sec  776.10 K/s  4.75 bits
+book1          -> 768771 in  525260 out  68.32%  0.83 sec  904.52 K/s  5.47 bits
+book2          -> 610856 in  361613 out  59.20%  0.58 sec  1028.52 K/s  4.74 bits
+geo            -> 102400 in  86611 out  84.58%  0.14 sec  714.29 K/s  6.77 bits
+news           -> 377109 in  231564 out  61.41%  0.38 sec  969.13 K/s  4.91 bits
+obj1           -> 21504 in  13201 out  61.39%  0.04 sec  525.00 K/s  4.91 bits
+obj2           -> 246814 in  125579 out  50.88%  0.21 sec  1147.76 K/s  4.07 bits
+paper1         -> 53161 in  30638 out  57.63%  0.06 sec  865.25 K/s  4.61 bits
+paper2         -> 82199 in  50208 out  61.08%  0.08 sec  1003.41 K/s  4.89 bits
+paper3         -> 46526 in  29295 out  62.96%  0.05 sec  908.71 K/s  5.04 bits
+paper4         -> 13286 in  8253 out  62.12%  0.02 sec  648.73 K/s  4.97 bits
+paper5         -> 11954 in  7275 out  60.86%  0.03 sec  389.13 K/s  4.87 bits
+paper6         -> 38105 in  21756 out  57.09%  0.04 sec  930.30 K/s  4.57 bits
+pic            -> 513216 in  125924 out  24.54%  0.31 sec  1616.73 K/s  1.96 bits
+progc          -> 39611 in  21506 out  54.29%  0.04 sec  967.07 K/s  4.34 bits
+progl          -> 71646 in  30889 out  43.11%  0.06 sec  1166.11 K/s  3.45 bits
+progp          -> 49379 in  20956 out  42.44%  0.04 sec  1205.54 K/s  3.40 bits
+trans          -> 93695 in  42835 out  45.72%  0.09 sec  1016.66 K/s  3.66 bits
+TOTAL          -> 3251493 in  1799453 out  55.34%  3.61 sec  879.58 K/s  4.43 bits
