@@ -2,10 +2,10 @@
 ### Voof Makefile
 ###
 
-ALL=port.h compress.h lzrw1a.c lzrw3a.c voof.c *eadme ?akefile
+ALL=port.h compress.h lzrw1a.c lzrw3a.c voof.c *EADME ?akefile
 
 # Compiler to use; usually cc.
-CC=cc
+CC?=cc
 
 # The usual flags for CC. -O for optimized code, -g for debug symbols...  
 FLAGS=-O
@@ -52,7 +52,10 @@ tags:
 clean:
 	rm -f core *.o
 
+distclean: clean
+	rm -f voof foov vcat voof1a
+
 clobber: clean
-	rm -i $(ALL)  voof foov vcat unvoof
+	rm -i $(ALL)  voof foov vcat voof1a
 
 # eof

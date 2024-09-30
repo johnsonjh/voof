@@ -11,6 +11,12 @@
 
 #ifndef DONE_PORT       /* Only do this if not previously done.                   */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <strings.h>
+#include <time.h>
+
 #ifdef THINK_C
 #	define UBYTE unsigned char      /* Unsigned byte                       */
 #	define UWORD unsigned short     /* Unsigned word (2 bytes)             */

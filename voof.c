@@ -18,6 +18,7 @@
  */
 
 #include <stdio.h>
+#include <strings.h>
 #ifndef FILENAME_MAX				/* should be declared in "stdio.h" */
 #	define FILENAME_MAX 12
 #endif
@@ -86,8 +87,10 @@ typedef unsigned long FourByteType;	/* must be (atleast) 4 bytes */
 	extern char					*rindex();
 
 
+void usage(char*);
+void print_stats(void);
 
-main(argc, argv)
+int main(argc, argv)
 	int argc;
 	char **argv;
 {
@@ -201,8 +204,8 @@ main(argc, argv)
 
 
 
-
-do_compress(fname)
+int close_files(int ok);
+int do_compress(fname)
 	char *fname;
 {
 	register ULONG						insize;
@@ -320,7 +323,7 @@ do_compress(fname)
 
 
 
-do_decompress(fname)
+int do_decompress(fname)
 	char *fname;
 {
 	register ULONG						insize;
@@ -448,7 +451,7 @@ nomem:
 
 
 
-close_files(ok)
+int close_files(ok)
 	int ok;
 {
 	if (inbuf != NULL) free(inbuf);		inbuf = NULL;
@@ -549,7 +552,7 @@ int Putl (aLongword, out)
 
 
 
-print_stats()
+void print_stats(void)
 {
 	register REAL				ratio, elapsed_time;
 	register char				*cp;
@@ -598,7 +601,7 @@ print_stats()
 
 
 
-usage(progname)
+void usage(progname)
 	char *progname;
 {
 	(void) fprintf(stderr,

@@ -109,10 +109,10 @@ static struct compress_identity identity =
 };
 
 #ifndef _STDC_
-void compress_compress(), compress_decompress();
+LOCAL void compress_compress(), compress_decompress();
 #else
-void compress_compress  (UBYTE *,UBYTE *,ULONG,UBYTE *,ULONG *);
-void compress_decompress(UBYTE *,UBYTE *,ULONG,UBYTE *,ULONG *);
+LOCAL void compress_compress  (UBYTE *,UBYTE *,ULONG,UBYTE *,ULONG *);
+LOCAL void compress_decompress(UBYTE *,UBYTE *,ULONG,UBYTE *,ULONG *);
 #endif
 
 /******************************************************************************/
